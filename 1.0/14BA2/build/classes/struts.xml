@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- <constant name="struts.devMode" value="true"></constant> -->
+	<constant name="struts.objectFactory" value="spring"></constant>
+	<constant name="struts.i18n.encoding" value="UTF-8"></constant>
+	<package name="14ba2" namespace="/" extends="struts-default">
+		<interceptors>
+			<interceptor name="accessInterceptor" class="xin.liaozhixing.class14ba2.web.interceptor.AccessInterceptor"></interceptor>
+			<interceptor name="moduleStatisticInterceptor" class="xin.liaozhixing.class14ba2.web.interceptor.ModuleStatisticInterceptor"></interceptor>
+			<interceptor-stack name="studentStack">
+				<interceptor-ref name="accessInterceptor">
+					<param name="excludeMethods">login,getVerifyCode,validateVerifyCode,modifyPassword,activeAccount,getVerifyCodeOfActive</param>
+				</interceptor-ref>
+				<interceptor-ref name="moduleStatisticInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="studentStack"></default-interceptor-ref>
+		<global-results>
+			<result name="login">/index.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.RuntimeException"></exception-mapping>
+		</global-exception-mappings>
+		
+		<action name="studentAction_*" class="xin.liaozhixing.class14ba2.web.action.StudentAction" method="{1}">
+			<exception-mapping result="loginError" exception="xin.liaozhixing.class14ba2.exception.LoginException"></exception-mapping>
+			<exception-mapping result="passwordError" exception="xin.liaozhixing.class14ba2.exception.PasswordException"></exception-mapping>
+			<result name="toWelcome" type="redirect">/studentAction_welcome</result>
+			<result name="toHome">/home.jsp</result>
+			<result name="toHomework">/homework.jsp</result>
+			<result name="login">/index.jsp</result>
+			<result name="toModifyPassword">/modifyPassword.jsp</result>
+			<result name="toSuccess">/modifySuccess.jsp</result>
+			<result name="toResetPasswordOfLogin">/resetPasswordOfLogin.jsp</result>
+			<result name="toActive">/activeAccount.jsp</result>
+			<result name="toSuccessTips">/admin/successTips.jsp</result>
+			<result name="toEditStudent">editStudent.jsp</result>
+			
+			<result name="loginError">/index.jsp</result>
+			<result name="passwordError">/resetPassword.jsp</result>
+			<result name="error">/admin/errorTips.jsp</result>
+		</action>
+		
+		<action name="homeworkAction_*" class="xin.liaozhixing.class14ba2.web.action.HomeworkAction" method="{1}">
+			<result name="toHomework">/homework.jsp</result>
+		</action>
+		
+		<action name="noticeAction_*" class="xin.liaozhixing.class14ba2.web.action.NoticeAction" method="{1}">
+			<result name="toItem">/noticeItem.jsp</result>
+			<result name="toNotice">/notice.jsp</result>
+		</action>
+		
+		<action name="employmentAction_*" class="xin.liaozhixing.class14ba2.web.action.EmploymentAction" method="{1}">
+			<result name="toItem">/employmentItem.jsp</result>
+			<result name="toEmployInfo">/employInfo.jsp</result>
+		</action>
+		
+		<action name="scoreAction_*" class="xin.liaozhixing.class14ba2.web.action.ScoreAction" method="{1}">
+			<result name="toLogin">/scoreLogin.jsp</result>
+			<result name="toScore">/score.jsp</result>
+			<result name="error">/scoreLogin.jsp</result>
+		</action>
+		
+		
+	</package>
+	
+	<package name="admin" namespace="/" extends="struts-default">
+		<interceptors>
+			<interceptor name="accessInterceptor" class="xin.liaozhixing.class14ba2.web.interceptor.AccessInterceptor"></interceptor>
+			<interceptor name="adminInterceptor" class="xin.liaozhixing.class14ba2.web.interceptor.AdminInterceptor"></interceptor>
+			<interceptor-stack name="adminStack">
+				<interceptor-ref name="accessInterceptor">
+					<param name="excludeMethods">login,getVerifyCode,validateVerifyCode,modifyPassword,activeAccount,getVerifyCodeOfActive</param>
+				</interceptor-ref>
+				<interceptor-ref name="adminInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="adminStack"></default-interceptor-ref>
+		
+		<global-results>
+			<result name="login">/index.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.RuntimeException"></exception-mapping>
+		</global-exception-mappings>
+	
+		<action name="adminAction_*" class="xin.liaozhixing.class14ba2.web.action.AdminAction" method="{1}">
+			<result name="toAdminWelcome">/admin/welcome.jsp</result>
+			<result name="toAdministrator">/admin/administrator.jsp</result>
+			<result name="toStudent">/admin/student.jsp</result>
+			<result name="toNotice">/admin/notice.jsp</result>
+			<result name="toEditNotice">/admin/editNotice.jsp</result>
+			<result name="toSuccessTips">/admin/successTips.jsp</result>
+			<result name="toTask">/admin/task.jsp</result>
+			<result name="toHomework">/admin/homework.jsp</result>
+			<result name="toEmployInfo">/admin/employInfo.jsp</result>
+			<result name="toEditEmployInfo">/admin/editEmployInfo.jsp</result>
+			<result name="toCarousel">/admin/carousel.jsp</result>
+			<result name="toEditCarousel">/admin/editCarousel.jsp</result>
+			<result name="toGetCarousels" type="redirect">adminAction_getCarousels</result>
+			
+			<result name="error">/admin/errorTips.jsp</result>
+		</action>
+	</package>
+</struts>

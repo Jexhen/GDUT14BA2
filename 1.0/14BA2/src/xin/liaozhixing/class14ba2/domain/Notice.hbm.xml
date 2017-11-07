@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="xin.liaozhixing.class14ba2.domain.Notice" table="notice">
+		<id name="notice_id" column="notice_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="notice_title" column="notice_title" type="string"></property>
+		<property name="notice_abstract" column="notice_abstract" type="string"></property>
+		<property name="notice_content" column="notice_content" type="text"></property>
+		<property name="notice_date" column="notice_date" type="string"></property>
+		<property name="notice_scan" column="notice_scan" type="integer"></property>
+		<many-to-one name="student" class="xin.liaozhixing.class14ba2.domain.Student">
+			<column name="notice_stu_id"></column>
+		</many-to-one>
+		<set name="attachs" cascade="all">
+			<key column="attach_notice_id"></key>
+			<one-to-many class="xin.liaozhixing.class14ba2.domain.NoticeAttach"/>
+		</set>
+	</class>
+</hibernate-mapping>

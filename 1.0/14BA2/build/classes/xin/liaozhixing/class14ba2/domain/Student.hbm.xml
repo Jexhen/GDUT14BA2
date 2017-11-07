@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="xin.liaozhixing.class14ba2.domain.Student" table="student">
+		<id name="stu_id" column="stu_id">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="stu_password" column="stu_password" type="string"></property>
+		<property name="stu_name" column="stu_name" type="string"></property>
+		<property name="stu_avater_src" column="stu_avater_src" type="string"></property>
+		<property name="stu_sex" column="stu_sex" type="string"></property>
+		<property name="stu_birthday" column="stu_birthday" type="string"></property>
+		<property name="stu_dormitory" column="stu_dormitory" type="string"></property>
+		<property name="stu_signature" column="stu_signature" type="string"></property>
+		<property name="stu_email" column="stu_email" type="string"></property>
+		<property name="isadmin" column="isadmin" type="integer"></property>
+		<property name="isactive" column="isactive" type="integer"></property>
+		<property name="verify_code" column="verify_code" type="string"></property>
+		<property name="verify_time" column="verify_time" type="timestamp"></property>
+		<set name="homeworks">
+			<key column="homework_stu_id"></key>
+			<one-to-many class="xin.liaozhixing.class14ba2.domain.Homework"/>
+		</set>
+		<set name="notices">
+			<key column="notice_stu_id"></key>
+			<one-to-many class="xin.liaozhixing.class14ba2.domain.Notice"/>
+		</set>
+		<set name="employInfos">
+			<key column="emp_info_stu_id"></key>
+			<one-to-many class="xin.liaozhixing.class14ba2.domain.EmployInfo"/>
+		</set>
+	</class>
+</hibernate-mapping>

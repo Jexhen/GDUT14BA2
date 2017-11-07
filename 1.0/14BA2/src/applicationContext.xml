@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd ">
+
+<!-- 读取db.properties文件 -->
+<context:property-placeholder location="classpath:db.properties" />
+<!-- 配置c3p0连接池 -->
+<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	<property name="jdbcUrl" value="${jdbc.jdbcUrl}" ></property>
+	<property name="driverClass" value="${jdbc.driverClass}" ></property>
+	<property name="user" value="${jdbc.user}" ></property>
+	<property name="password" value="${jdbc.password}" ></property>
+	<!-- <property name="minPoolSize" value="10" />  
+    <property name="maxPoolSize" value="100" />  
+    <property name="maxIdleTime" value="1800" />  
+    <property name="acquireIncrement" value="3" />  
+    <property name="maxStatements" value="1000" />  
+    <property name="initialPoolSize" value="10" />  
+    <property name="idleConnectionTestPeriod" value="60" />  
+    <property name="acquireRetryAttempts" value="30" />  
+    <property name="breakAfterAcquireFailure" value="true" />  
+    <property name="testConnectionOnCheckout" value="true" />  -->
+	<!-- <property name="minPoolSize" value="${jdbc.minPoolSize}"></property>
+	<property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
+	<property name="initialPoolSize" value="${jdbc.initialPoolSize}"></property> -->
+</bean>
+
+<!-- 核心事务管理器 -->
+<bean name="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager" autowire="default">
+	<property name="sessionFactory" ref="sessionFactory" ></property>
+</bean>
+
+<bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+	<!-- 将连接池注入到sessionFactory, hibernate会通过连接池获得连接 -->
+	<property name="dataSource" ref="dataSource" ></property>
+	
+	<!-- 配置hibernate基本信息 -->
+	<property name="hibernateProperties">
+		<props>
+			<prop key="hibernate.dialect" >org.hibernate.dialect.MySQLDialect</prop>
+			
+			<!--  可选配置 -->
+			<prop key="hibernate.show_sql" >true</prop>
+			<prop key="hibernate.format_sql" >true</prop>
+			<prop key="hibernate.hbm2ddl.auto" >update</prop>
+		</props>
+	</property>
+	<!-- 引入orm元数据,指定orm元数据所在的包路径,spring会自动读取包中的所有配置 -->
+	<property name="mappingDirectoryLocations" value="classpath:xin/liaozhixing/class14ba2/domain" ></property>
+</bean>
+
+<!-- 配置通知 -->
+ <tx:advice id="txAdvice" transaction-manager="transactionManager" >
+	<tx:attributes>
+		<tx:method name="save*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false" />
+		<tx:method name="persist*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false" />
+		<tx:method name="update*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false" />
+		<tx:method name="modify*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false" />
+		<tx:method name="delete*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false" />
+		<tx:method name="remove*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false" />
+		<tx:method name="get*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="true" />
+		<tx:method name="find*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="true" />
+		<tx:method name="*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false" />
+	</tx:attributes>
+</tx:advice> 
+<!-- 配置将通知织入目标对象
+配置切点
+配置切面 -->
+<aop:config>
+	<aop:pointcut expression="execution(* xin.liaozhixing.class14ba2.service.impl.*ServiceImpl.*(..))" id="txPc"/>
+	<aop:advisor advice-ref="txAdvice" pointcut-ref="txPc" />
+</aop:config> 
+
+<!-- 开启注解事务 -->
+<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+
+<!-- action -->
+<bean name="studentAction" class="xin.liaozhixing.class14ba2.web.action.StudentAction" scope="prototype">
+	<property name="studentService" ref="studentService"></property>
+	<property name="carouselService" ref="carouselService"></property>
+</bean>
+<bean name="homeworkAction" class="xin.liaozhixing.class14ba2.web.action.HomeworkAction" scope="prototype">
+	<property name="homeworkService" ref="homeworkService"></property>
+</bean>
+<bean name="noticeAction" class="xin.liaozhixing.class14ba2.web.action.NoticeAction" scope="prototype">
+	<property name="noticeService" ref="noticeService"></property>
+</bean>
+<bean name="employmentAction" class="xin.liaozhixing.class14ba2.web.action.EmploymentAction" scope="prototype">
+	<property name="employmentService" ref="employmentService"></property>
+</bean>
+<bean name="scoreAction" class="xin.liaozhixing.class14ba2.web.action.ScoreAction" scope="prototype">
+</bean>
+<bean name="adminAction" class="xin.liaozhixing.class14ba2.web.action.AdminAction" scope="prototype">
+	<property name="studentService" ref="studentService"></property>
+	<property name="moduleService" ref="moduleService" ></property>
+	<property name="noticeService" ref="noticeService" ></property>
+	<property name="homeworkService" ref="homeworkService" ></property>
+	<property name="employmentService" ref="employmentService"></property>
+	<property name="carouselService" ref="carouselService"></property>
+</bean>
+
+<!-- service -->
+<bean name="studentService" class="xin.liaozhixing.class14ba2.service.impl.StudentServiceImpl">
+	<property name="studentDao" ref="studentDao"></property>
+</bean>
+<bean name="homeworkService" class="xin.liaozhixing.class14ba2.service.impl.HomeworkServiceImpl">
+	<property name="homeworkDao" ref="homeworkDao"></property>
+</bean>
+<bean name="noticeService" class="xin.liaozhixing.class14ba2.service.impl.NoticeServiceImpl">
+	<property name="noticeDao" ref="noticeDao"></property>
+</bean>
+<bean name="employmentService" class="xin.liaozhixing.class14ba2.service.impl.EmploymentServiceImpl">
+	<property name="employmentDao" ref="employmentDao"></property>
+</bean>
+<bean name="moduleService" class="xin.liaozhixing.class14ba2.service.impl.ModuleServiceImpl">
+	<property name="moduleDao" ref="moduleDao"></property>
+</bean>
+<bean name="carouselService" class="xin.liaozhixing.class14ba2.service.impl.CarouselServiceImpl">
+	<property name="carouselDao" ref="carouselDao"></property>
+</bean>
+
+<!-- dao -->
+<bean name="studentDao" class="xin.liaozhixing.class14ba2.dao.impl.StudentDaoImpl">
+	<property name="sessionFactory" ref="sessionFactory" ></property>
+</bean>
+<bean name="homeworkDao" class="xin.liaozhixing.class14ba2.dao.impl.HomeworkDaoImpl">
+	<property name="sessionFactory" ref="sessionFactory" ></property>
+</bean>
+<bean name="noticeDao" class="xin.liaozhixing.class14ba2.dao.impl.NoticeDaoImpl">
+	<property name="sessionFactory" ref="sessionFactory" ></property>
+</bean>
+<bean name="employmentDao" class="xin.liaozhixing.class14ba2.dao.impl.EmploymentDaoimpl">
+	<property name="sessionFactory" ref="sessionFactory" ></property>
+</bean>
+<bean name="moduleDao" class="xin.liaozhixing.class14ba2.dao.impl.ModuleDaoImpl">
+	<property name="sessionFactory" ref="sessionFactory" ></property>
+</bean>
+<bean name="carouselDao" class="xin.liaozhixing.class14ba2.dao.impl.CarouselDaoImpl">
+	<property name="sessionFactory" ref="sessionFactory" ></property>
+</bean>
+
+<!-- interceptor -->
+<bean name="moduleStatisticInterceptor" class="xin.liaozhixing.class14ba2.web.interceptor.ModuleStatisticInterceptor" scope="prototype">
+	<property name="moduleService" ref="moduleService" ></property>
+</bean>
+
+</beans>

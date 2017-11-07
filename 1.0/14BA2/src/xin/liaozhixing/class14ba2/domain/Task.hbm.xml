@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="xin.liaozhixing.class14ba2.domain.Task" table="task">
+		<id name="task_id" column="task_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="task_name" column="task_name" type="string"></property>
+		<property name="task_deadline" column="task_deadline" type="string"></property>
+		<set name="homeworks" cascade="delete">
+			<key column="homework_task_id"></key>
+			<one-to-many class="xin.liaozhixing.class14ba2.domain.Homework"/>
+		</set>
+	</class>
+</hibernate-mapping>

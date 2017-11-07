@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="xin.liaozhixing.class14ba2.domain.Module" table="module">
+		<id name="module_id" column="module_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="module_name" column="module_name" type="string"></property>
+		<property name="module_access_num" column="module_access_num" type="long"></property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="xin.liaozhixing.class14ba2.domain.Homework" table="homework">
+		<id name="homework_id" column="homework_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="homework_name" column="homework_name" type="string"></property>
+		<property name="homework_src" column="homework_src" type="string"></property>
+		<property name="homework_content_type" column="homework_content_type" type="string"></property>
+		<many-to-one name="student" class="xin.liaozhixing.class14ba2.domain.Student">
+			<column name="homework_stu_id"></column>
+		</many-to-one>
+		<many-to-one name="task" class="xin.liaozhixing.class14ba2.domain.Task">
+			<column name="homework_task_id"></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

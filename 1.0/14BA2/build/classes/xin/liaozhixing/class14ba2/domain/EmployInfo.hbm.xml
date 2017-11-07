@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="xin.liaozhixing.class14ba2.domain.EmployInfo" table="employinfo">
+		<id name="emp_info_id" column="emp_info_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="emp_info_title" column="emp_info_title" type="string"></property>
+		<property name="emp_info_content" column="emp_info_content" type="text"></property>
+		<property name="emp_info_date" column="emp_info_date" type="string"></property>
+		<property name="emp_info_deadline" column="emp_info_deadline" type="string"></property>
+		<property name="emp_info_scan" column="emp_info_scan" type="integer"></property>
+		<many-to-one name="student" class="xin.liaozhixing.class14ba2.domain.Student">
+			<column name="emp_info_stu_id"></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

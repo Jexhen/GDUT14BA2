@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="xin.liaozhixing.class14ba2.domain.NoticeAttach" table="noticeattach">
+		<id name="notice_attach_id" column="notice_attach_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="noitce_attach_name" column="noitce_attach_name" type="string"></property>
+		<property name="notice_attach_src" column="notice_attach_src" type="string"></property>
+		<property name="notice_attach_content_type" column="notice_attach_content_type" type="string"></property>
+		<many-to-one name="notice" class="xin.liaozhixing.class14ba2.domain.Notice">
+			<column name="attach_notice_id"></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
